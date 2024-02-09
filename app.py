@@ -61,7 +61,14 @@ def main():
 
     if audio_file is not None:
         # Display uploaded audio file
-        st.success('Audio file Uploaded')
+        # Initialize a placeholder to hold the success message
+        success_placeholder = st.empty()
+        # Function to update the success message dynamically
+        def update_success_message(message):
+            # Update the success message
+            success_placeholder.success(message)
+        
+        update_success_message('Audio file Uploaded')
         time.sleep(3)
         #st.audio(audio_file, format="audio/*")
         # Display message
@@ -71,13 +78,13 @@ def main():
         filter_order = 5
         filter_btype = "bandpass"
         raw_audio, sample_rate = librosa.load(audio_file, sr=sample_rate)
-        st.success('Removing Noise From the Audio File..')
+        update_success_message('Removing Noise From the Audio File..')
         time.sleep(3)
         # Noise reduction method, filter
         audio_data = Filter_Denoised(raw_audio, sample_rate, filter_order,filter_lowcut,filter_highcut, btype=filter_btype)
         save_path='denoise/soundfile.wav'
         write(save_path, sample_rate, audio_data)
-        st.success('Converting into Log-Mel Spectograms')
+        update_success_message('Converting into Log-Mel Spectograms')
         time.sleep(3)
         build_spectogram(save_path)
         # Load the trained LSTM model
@@ -99,8 +106,8 @@ def main():
 
         # Make prediction using the trained LSTM model
         prediction = model.predict(features.reshape((features.shape[0], -1, features.shape[-1])))
-        st.success('Model has predicted the disease as below:')
-        time.sleep(2)
+        update_success_message('Model has predicted the disease as below:')
+        time.sleep(1)
         # Convert prediction probabilities to class labels
         label_encoder = LabelEncoder()
         labels_encoded = label_encoder.fit_transform(labels)
