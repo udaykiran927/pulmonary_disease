@@ -55,7 +55,7 @@ def build_spectogram(file_path):
 
 
 def main():
-    st.title("Audio Upload and Display App")
+    st.title("Lung Disease Detection")
     # Upload audio file
     audio_file = st.file_uploader("Choose an audio file", type=["mp3", "wav", "ogg"])
 
