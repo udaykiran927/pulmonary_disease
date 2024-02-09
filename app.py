@@ -6,6 +6,7 @@ import librosa
 import matplotlib.pyplot as plt
 from scipy.io.wavfile import write
 import os
+import time
 import numpy as np
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
@@ -55,13 +56,13 @@ def build_spectogram(file_path):
 
 def main():
     st.title("Audio Upload and Display App")
-    k='Audio file Uploaded'
     # Upload audio file
     audio_file = st.file_uploader("Choose an audio file", type=["mp3", "wav", "ogg"])
 
     if audio_file is not None:
         # Display uploaded audio file
-        st.success(k)
+        st.success('Audio file Uploaded')
+        time.sleep(3)
         #st.audio(audio_file, format="audio/*")
         # Display message
         sample_rate = 4000
@@ -70,12 +71,14 @@ def main():
         filter_order = 5
         filter_btype = "bandpass"
         raw_audio, sample_rate = librosa.load(audio_file, sr=sample_rate)
-        k='Removing Noise From the Audio File..'
+        st.success('Removing Noise From the Audio File..')
+        time.sleep(3)
         # Noise reduction method, filter
         audio_data = Filter_Denoised(raw_audio, sample_rate, filter_order,filter_lowcut,filter_highcut, btype=filter_btype)
         save_path='denoise/soundfile.wav'
         write(save_path, sample_rate, audio_data)
-        k='Converting into Log-Mel Spectograms'
+        st.success('Converting into Log-Mel Spectograms')
+        time.sleep(3)
         build_spectogram(save_path)
         # Load the trained LSTM model
         model = load_model('lstm_all.h5')
@@ -96,7 +99,8 @@ def main():
 
         # Make prediction using the trained LSTM model
         prediction = model.predict(features.reshape((features.shape[0], -1, features.shape[-1])))
-        k='Model has predicted the disease as below:'
+        st.success('Model has predicted the disease as below:')
+        time.sleep(2)
         # Convert prediction probabilities to class labels
         label_encoder = LabelEncoder()
         labels_encoded = label_encoder.fit_transform(labels)
