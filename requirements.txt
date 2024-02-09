@@ -4,7 +4,7 @@ httplib2==0.22.0
 idna==3.4
 importlib-metadata==6.8.0
 importlib-resources==6.0.0
-keras==2.9.0
+keras==2.11.0
 Keras-Preprocessing==1.1.2
 librosa==0.10.1
 matplotlib==3.7.2
@@ -18,7 +18,7 @@ progressbar==2.5
 requests==2.29.0
 sounddevice==0.4.6
 soundfile==0.12.1
-streamlit==1.24.1
-streamlit-webrtc==0.45.1
-tensorflow==2.9.3
+streamlit==1.22.0
+tensorflow==2.11.0
+threadpoolctl==3.1.0
 
