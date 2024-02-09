@@ -55,13 +55,14 @@ def build_spectogram(file_path):
 
 def main():
     st.title("Audio Upload and Display App")
-
+    k='Audio file Uploaded'
     # Upload audio file
     audio_file = st.file_uploader("Choose an audio file", type=["mp3", "wav", "ogg"])
 
     if audio_file is not None:
         # Display uploaded audio file
-        st.audio(audio_file, format="audio/*")
+        st.success(k)
+        #st.audio(audio_file, format="audio/*")
         # Display message
         sample_rate = 4000
         filter_lowcut = 50
@@ -69,10 +70,12 @@ def main():
         filter_order = 5
         filter_btype = "bandpass"
         raw_audio, sample_rate = librosa.load(audio_file, sr=sample_rate)
+        k='Removing Noise From the Audio File..'
         # Noise reduction method, filter
         audio_data = Filter_Denoised(raw_audio, sample_rate, filter_order,filter_lowcut,filter_highcut, btype=filter_btype)
         save_path='denoise/soundfile.wav'
         write(save_path, sample_rate, audio_data)
+        k='Converting into Log-Mel Spectograms'
         build_spectogram(save_path)
         # Load the trained LSTM model
         model = load_model('lstm_all.h5')
@@ -86,20 +89,20 @@ def main():
         img_array = img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
         img_array = preprocess_input(img_array)
-
+        k='Extracting the features'
         # Extract features from the test image using VGG16
         features = vgg16.predict(img_array)
 
 
         # Make prediction using the trained LSTM model
         prediction = model.predict(features.reshape((features.shape[0], -1, features.shape[-1])))
-
+        k='Model has predicted the disease as below:'
         # Convert prediction probabilities to class labels
         label_encoder = LabelEncoder()
         labels_encoded = label_encoder.fit_transform(labels)
         predicted_class = label_encoder.inverse_transform([np.argmax(prediction)])
 
-        st.write(predicted_class)
+        st.write(predicted_class[0])
         
 
 
