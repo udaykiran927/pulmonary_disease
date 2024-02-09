@@ -99,7 +99,7 @@ def main():
         labels_encoded = label_encoder.fit_transform(labels)
         predicted_class = label_encoder.inverse_transform([np.argmax(prediction)])
 
-        print("Predicted class:", predicted_class)
+        st.write(predicted_class)
         
 
 
