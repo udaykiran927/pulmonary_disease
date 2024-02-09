@@ -99,7 +99,7 @@ def main():
         img_array = img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
         img_array = preprocess_input(img_array)
-        k='Extracting the features'
+        update_success_message('Extracting the features')
         # Extract features from the test image using VGG16
         features = vgg16.predict(img_array)
 
